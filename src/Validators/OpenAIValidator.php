@@ -9,12 +9,14 @@ use Psr\Http\Message\RequestFactoryInterface;
 
 class OpenAIValidator implements ValidatorInterface
 {
-    public function __construct(private readonly ClientInterface $httpClient, private readonly RequestFactoryInterface $requestFactory) {}
-
-    public function validate(string $key, ?string $secret = null): bool
+    public function __construct(private readonly ClientInterface $httpClient, private readonly RequestFactoryInterface $requestFactory)
     {
-        $request = $this->requestFactory->createRequest('POST', 'https://api.openai.com/v1/engines')
-            ->withHeader('Authorization', 'Bearer '.$key);
+    }
+
+    public function validate(string $key, ?string $secret = null) : bool
+    {
+        $request = $this->requestFactory->createRequest('GET', 'https://api.openai.com/v1/models')
+            ->withHeader('Authorization', 'Bearer ' . $key);
 
         $response = $this->httpClient->sendRequest($request);
 

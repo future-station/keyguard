@@ -2,20 +2,29 @@
 
 namespace FutureStation\KeyGuard\Services;
 
-use FutureStation\KeyGuard\Contracts\ValidatorInterface;
+use GuzzleHttp\Psr7\HttpFactory;
+use Psr\Http\Client\ClientInterface;
+use Http\Discovery\Psr18ClientDiscovery;
 use FutureStation\KeyGuard\Enums\ServiceType;
-use FutureStation\KeyGuard\Validators\CompositeValidator;
+use Psr\Http\Message\RequestFactoryInterface;
 use FutureStation\KeyGuard\Validators\GitHubValidator;
 use FutureStation\KeyGuard\Validators\OpenAIValidator;
 use FutureStation\KeyGuard\Validators\ShopifyValidator;
-use Psr\Http\Client\ClientInterface;
-use Psr\Http\Message\RequestFactoryInterface;
+use FutureStation\KeyGuard\Contracts\ValidatorInterface;
+use FutureStation\KeyGuard\Validators\CompositeValidator;
 
 class ValidatorFactory
 {
-    public function __construct(private readonly ClientInterface $httpClient, private readonly RequestFactoryInterface $requestFactory) {}
+    private ClientInterface $httpClient;
+    private RequestFactoryInterface $requestFactory;
 
-    public function create(ServiceType $service): ValidatorInterface
+    public function __construct(ClientInterface $httpClient = null, RequestFactoryInterface $requestFactory = null)
+    {
+        $this->httpClient = $httpClient ?: Psr18ClientDiscovery::find();
+        $this->requestFactory = $requestFactory ?: new HttpFactory();
+    }
+
+    public function create(ServiceType $service) : ValidatorInterface
     {
         return match ($service) {
             ServiceType::OPENAI => new OpenAIValidator($this->httpClient, $this->requestFactory),

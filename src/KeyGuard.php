@@ -11,9 +11,14 @@ use FutureStation\KeyGuard\Services\ValidatorFactory;
 
 class KeyGuard
 {
-    public function __construct(private readonly ValidatorFactory $validatorFactory) {}
+    private ValidatorFactory $validatorFactory;
 
-    public function validate(ServiceType $service, string $key, ?string $secret = null, ?string $hash = null, ?string $data = null): ValidationResponse
+    public function __construct(ValidatorFactory $validatorFactory = null)
+    {
+        $this->validatorFactory = $validatorFactory ?: new ValidatorFactory();
+    }
+
+    public function validate(ServiceType $service, string $key, ?string $secret = null, ?string $hash = null, ?string $data = null) : ValidationResponse
     {
         $validator = $this->validatorFactory->create($service);
 
