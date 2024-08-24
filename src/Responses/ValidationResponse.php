@@ -2,30 +2,32 @@
 
 namespace FutureStation\KeyGuard\Responses;
 
+use FutureStation\KeyGuard\Enums\ValidationStatus;
+
 class ValidationResponse
 {
-    private bool $isValid;
+    private ValidationStatus $status;
     private string $message;
     private array $data;
 
-    public function __construct(bool $isValid, string $message = '', array $data = [])
+    public function __construct(ValidationStatus $status, string $message = '', array $data = [])
     {
-        $this->isValid = $isValid;
+        $this->status = $status;
         $this->message = $message;
-        $this->data    = $data;
+        $this->data = $data;
     }
 
-    public function isValid(): bool
+    public function getStatus() : ValidationStatus
     {
-        return $this->isValid;
+        return $this->status;
     }
 
-    public function getMessage(): string
+    public function getMessage() : string
     {
         return $this->message;
     }
 
-    public function getData(): array
+    public function getData() : array
     {
         return $this->data;
     }

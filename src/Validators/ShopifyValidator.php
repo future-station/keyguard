@@ -3,31 +3,20 @@
 namespace FutureStation\KeyGuard\Validators;
 
 use FutureStation\KeyGuard\Contracts\HMACValidatorInterface;
-use FutureStation\KeyGuard\Contracts\ValidatorInterface;
-use FutureStation\KeyGuard\Exceptions\InvalidApiKeyException;
-use GuzzleHttp\Client;
+use FutureStation\KeyGuard\Exceptions\InvalidHMACException;
+use Psr\Http\Client\ClientInterface;
+use Psr\Http\Message\RequestFactoryInterface;
 
-class ShopifyValidator implements ValidatorInterface
+class ShopifyValidator implements HMACValidatorInterface
 {
-    private HMACValidatorInterface $hmacValidator;
-    private Client $client;
-
-    public function __construct(HMACValidatorInterface $hmacValidator)
+    public function validateHMAC(string $data, string $secret, string $hash) : bool
     {
-        $this->hmacValidator = $hmacValidator;
-        $this->client        = new Client();
-    }
+        // Calculate the HMAC using SHA-256
+        $calculatedHash = base64_encode(hash_hmac('sha256', $data, $secret, true));
 
-    public function validate(string $key, ?string $secret = null): bool
-    {
-        $response = $this->client->get('https://' . $key . '.myshopify.com/admin/shop.json', [
-            'headers' => [
-                'X-Shopify-Access-Token' => $secret,
-            ],
-        ]);
-
-        if ($response->getStatusCode() !== 200) {
-            throw new InvalidApiKeyException('Invalid Shopify API Key or Secret');
+        // Compare the calculated hash with the provided hash
+        if (! hash_equals($calculatedHash, $hash)) {
+            throw new InvalidHMACException('Provided HMAC hash does not match the calculated hash.');
         }
 
         return true;

@@ -2,32 +2,31 @@
 
 namespace FutureStation\KeyGuard\Validators;
 
-use FutureStation\KeyGuard\Contracts\HMACValidatorInterface;
+use Psr\Http\Client\ClientInterface;
+use Psr\Http\Message\RequestFactoryInterface;
 use FutureStation\KeyGuard\Contracts\ValidatorInterface;
 use FutureStation\KeyGuard\Exceptions\InvalidApiKeyException;
-use GuzzleHttp\Client;
 
 class GitHubValidator implements ValidatorInterface
 {
-    private HMACValidatorInterface $hmacValidator;
-    private Client $client;
+    private ClientInterface $httpClient;
+    private RequestFactoryInterface $requestFactory;
 
-    public function __construct(HMACValidatorInterface $hmacValidator)
+    public function __construct(ClientInterface $httpClient, RequestFactoryInterface $requestFactory)
     {
-        $this->hmacValidator = $hmacValidator;
-        $this->client        = new Client();
+        $this->httpClient = $httpClient;
+        $this->requestFactory = $requestFactory;
     }
 
-    public function validate(string $key, ?string $secret = null): bool
+    public function validate(string $key, ?string $secret = null) : bool
     {
-        $response = $this->client->get('https://api.github.com/user', [
-            'headers' => [
-                'Authorization' => 'token ' . $key,
-            ],
-        ]);
+        $request = $this->requestFactory->createRequest('POST', 'https://api.GitHub.com/v1/engines')
+            ->withHeader('Authorization', 'Bearer ' . $key);
+
+        $response = $this->httpClient->sendRequest($request);
 
         if ($response->getStatusCode() !== 200) {
-            throw new InvalidApiKeyException('Invalid GitHub Token');
+            throw new InvalidApiKeyException('Invalid GitHub API Key');
         }
 
         return true;
