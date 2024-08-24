@@ -8,7 +8,7 @@ enum ValidationStatus: string
     case INVALID = 'invalid';
     case ERROR = 'error';
 
-    public function getMessage() : string
+    public function getMessage(): string
     {
         return match ($this) {
             self::VALID => 'Validation successful.',

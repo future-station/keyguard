@@ -6,5 +6,5 @@ use FutureStation\KeyGuard\Enums\ServiceType;
 
 interface FactoryInterface
 {
-    public function create(ServiceType $service) : ValidatorInterface;
+    public function create(ServiceType $service): ValidatorInterface;
 }

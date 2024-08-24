@@ -9,8 +9,8 @@ class OpenAIValidatorTest extends TestCase
 {
     public function testValidateSuccess()
     {
-        $hmacValidator = new HMACValidator();
-        $validator     = new OpenAIValidator($hmacValidator);
+        $hmacValidator = new HMACValidator;
+        $validator = new OpenAIValidator($hmacValidator);
 
         // Assuming we have a mock HTTP client or similar setup
         $this->assertTrue($validator->validate('openai-valid-key'));
@@ -20,8 +20,8 @@ class OpenAIValidatorTest extends TestCase
     {
         $this->expectException(InvalidApiKeyException::class);
 
-        $hmacValidator = new HMACValidator();
-        $validator     = new OpenAIValidator($hmacValidator);
+        $hmacValidator = new HMACValidator;
+        $validator = new OpenAIValidator($hmacValidator);
 
         // Assuming we have a mock HTTP client or similar setup
         $validator->validate('openai-invalid-key');

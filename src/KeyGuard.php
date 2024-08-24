@@ -2,13 +2,12 @@
 
 namespace FutureStation\KeyGuard;
 
-use FutureStation\KeyGuard\Contracts\ValidatorInterface;
 use FutureStation\KeyGuard\Contracts\HMACValidatorInterface;
-use FutureStation\KeyGuard\Services\ValidatorFactory;
-use FutureStation\KeyGuard\Responses\ValidationResponse;
 use FutureStation\KeyGuard\Enums\ServiceType;
 use FutureStation\KeyGuard\Enums\ValidationStatus;
 use FutureStation\KeyGuard\Exceptions\InvalidApiKeyException;
+use FutureStation\KeyGuard\Responses\ValidationResponse;
+use FutureStation\KeyGuard\Services\ValidatorFactory;
 
 class KeyGuard
 {
@@ -19,7 +18,7 @@ class KeyGuard
         $this->validatorFactory = $validatorFactory;
     }
 
-    public function validate(ServiceType $service, string $key, ?string $secret = null, ?string $hash = null, ?string $data = null) : ValidationResponse
+    public function validate(ServiceType $service, string $key, ?string $secret = null, ?string $hash = null, ?string $data = null): ValidationResponse
     {
         $validator = $this->validatorFactory->create($service);
 
