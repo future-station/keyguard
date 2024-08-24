@@ -9,3 +9,4 @@
 *.swo
 playground/*
 .idea
+.DS_Store
