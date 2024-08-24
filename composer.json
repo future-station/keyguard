@@ -1,7 +1,26 @@
 {
     "name": "future-station/keyguard",
     "description": "A PHP package for validating API keys, secrets, and tokens for popular services.",
+    "keywords": [
+        "php",
+        "openai",
+        "github",
+        "shopify",
+        "validation",
+        "client",
+        "api",
+        "key",
+        "secret",
+        "token"
+    ],
     "type": "library",
+    "license": "BSD-3-Clause",
+    "authors": [
+        {
+            "name": "akr4m",
+            "email": "akram@futurestation.net"
+        }
+    ],
     "require": {
         "php": "^8.1",
         "php-http/discovery": "^1.19",
@@ -13,15 +32,16 @@
         "vlucas/phpdotenv": "^5.6"
     },
     "require-dev": {
+        "guzzlehttp/psr7": "^2.7",
         "laravel/pint": "^1.17",
         "mockery/mockery": "^1.6",
         "pestphp/pest": "^2.35",
         "pestphp/pest-plugin-arch": "^2.7",
         "pestphp/pest-plugin-type-coverage": "^2.8",
         "phpstan/phpstan": "^1.11",
+        "rector/rector": "^1.2",
         "symfony/var-dumper": "^7.1"
     },
-    "license": "BSD-3-Clause",
     "autoload": {
         "psr-4": {
             "FutureStation\\KeyGuard\\": "src/"
@@ -32,12 +52,6 @@
             "Tests\\": "tests/"
         }
     },
-    "authors": [
-        {
-            "name": "akr4m",
-            "email": "akram@futurestation.net"
-        }
-    ],
     "minimum-stability": "dev",
     "prefer-stable": true,
     "config": {
@@ -50,12 +64,15 @@
     },
     "scripts": {
         "lint": "pint -v",
+        "refactor": "rector --debug",
         "test:lint": "pint --test -v",
+        "test:refactor": "rector --dry-run",
         "test:types": "phpstan analyse --ansi",
         "test:type-coverage": "pest --type-coverage --min=100",
         "test:unit": "pest --colors=always",
         "test": [
             "@test:lint",
+            "@test:refactor",
             "@test:types",
             "@test:type-coverage",
             "@test:unit"

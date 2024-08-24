@@ -6,18 +6,16 @@ use FutureStation\KeyGuard\Enums\ValidationStatus;
 
 class ValidationResponse
 {
-    private ValidationStatus $status;
-
-    private string $message;
-
-    private array $data;
-
-    public function __construct(ValidationStatus $status, string $message = '', array $data = [])
-    {
-        $this->status = $status;
-        $this->message = $message;
-        $this->data = $data;
-    }
+    /**
+     * ValidationResponse constructor.
+     *
+     * @param  array<string, mixed>  $data
+     */
+    public function __construct(
+        private readonly ValidationStatus $status,
+        private readonly string $message = '',
+        private readonly array $data = []
+    ) {}
 
     public function getStatus(): ValidationStatus
     {
@@ -29,6 +27,9 @@ class ValidationResponse
         return $this->message;
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public function getData(): array
     {
         return $this->data;

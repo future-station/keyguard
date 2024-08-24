@@ -11,12 +11,7 @@ use FutureStation\KeyGuard\Services\ValidatorFactory;
 
 class KeyGuard
 {
-    private ValidatorFactory $validatorFactory;
-
-    public function __construct(ValidatorFactory $validatorFactory)
-    {
-        $this->validatorFactory = $validatorFactory;
-    }
+    public function __construct(private readonly ValidatorFactory $validatorFactory) {}
 
     public function validate(ServiceType $service, string $key, ?string $secret = null, ?string $hash = null, ?string $data = null): ValidationResponse
     {
@@ -27,14 +22,14 @@ class KeyGuard
             $isValid = $validator->validate($key, $secret);
 
             // If a hash and data are provided, and the validator supports HMAC, perform HMAC validation
-            if ($hash !== null && $data !== null && $validator instanceof HMACValidatorInterface) {
+            if ($hash !== null && $secret !== null && $data !== null && $validator instanceof HMACValidatorInterface) {
                 $isValid = $isValid && $validator->validateHMAC($data, $secret, $hash);
             }
 
             $status = $isValid ? ValidationStatus::VALID : ValidationStatus::INVALID;
-        } catch (InvalidApiKeyException $e) {
+        } catch (InvalidApiKeyException) {
             $status = ValidationStatus::INVALID;
-        } catch (\Exception $e) {
+        } catch (\Exception) {
             $status = ValidationStatus::ERROR;
         }
 

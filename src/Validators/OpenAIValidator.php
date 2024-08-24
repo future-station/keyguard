@@ -9,15 +9,7 @@ use Psr\Http\Message\RequestFactoryInterface;
 
 class OpenAIValidator implements ValidatorInterface
 {
-    private ClientInterface $httpClient;
-
-    private RequestFactoryInterface $requestFactory;
-
-    public function __construct(ClientInterface $httpClient, RequestFactoryInterface $requestFactory)
-    {
-        $this->httpClient = $httpClient;
-        $this->requestFactory = $requestFactory;
-    }
+    public function __construct(private readonly ClientInterface $httpClient, private readonly RequestFactoryInterface $requestFactory) {}
 
     public function validate(string $key, ?string $secret = null): bool
     {
