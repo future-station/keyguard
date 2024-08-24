@@ -1,24 +1,17 @@
 {
     "name": "future-station/keyguard",
     "description": "A PHP package for validating API keys, secrets, and tokens for popular services.",
-    "keywords": [
-        "php",
-        "openai",
-        "github",
-        "shopify",
-        "validation",
-        "client",
-        "api",
-        "key",
-        "secret",
-        "token"
-    ],
+    "keywords": ["php", "openai", "github", "shopify", "validation", "client", "api", "key", "secret", "token"],
     "type": "library",
     "license": "BSD-3-Clause",
     "authors": [
         {
-            "name": "akr4m",
+            "name": "AkrAm",
             "email": "akram@futurestation.net"
+        },
+        {
+            "name": "Shuvro Roy",
+            "email": "shuvro.nsu.cse@gmail.com"
         }
     ],
     "require": {
