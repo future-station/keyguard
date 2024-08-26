@@ -19,7 +19,7 @@ class ValidatorFactory extends BaseValidator implements FactoryInterface
             ServiceType::OPENAI => new OpenAIValidator($this->httpClient, $this->requestFactory),
             ServiceType::GITHUB => new GitHubValidator($this->httpClient, $this->requestFactory),
             ServiceType::SHOPIFY => new CompositeValidator([new ShopifyValidator]),
-            default => throw new \InvalidArgumentException("Unsupported service type: {$service->value}"),
+            default => throw new \InvalidArgumentException("Unsupported service type: {$service->value}") // @phpstan-ignore-line
         };
     }
 }
