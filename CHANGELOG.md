@@ -8,20 +8,25 @@ All notable changes made to this project will be documented in this file. The fo
   - Introduced the `KeyGuard` facade to simplify the validation of API keys across different services like OpenAI, GitHub, and Shopify.
   - **Use Cases:**
     - **Validate an OpenAI API key**:
+
       ```php
       use FutureStation\KeyGuard\Facades\KeyGuard;
 
       $response = KeyGuard::validateOpenAI('your-openai-api-key');
       echo $response->getStatus(); // Outputs: 'valid' if the key is valid
       ```
+
     - **Validate a GitHub API key**:
+
       ```php
       use FutureStation\KeyGuard\Facades\KeyGuard;
 
       $response = KeyGuard::validateGitHub('your-github-api-key');
       echo $response->getStatus(); // Outputs: 'valid' if the key is valid
       ```
+
     - **Validate a Shopify API key with HMAC**:
+
       ```php
       use FutureStation\KeyGuard\Facades\KeyGuard;
 
@@ -37,7 +42,6 @@ All notable changes made to this project will be documented in this file. The fo
 
 - **PHPDoc Comments**:
   - Added comprehensive PHPDoc comments for all classes and methods to improve code documentation, making the codebase more understandable and easier to maintain.
-
 
 ## v0.1.0 (2024-08-25)
 ### Added
