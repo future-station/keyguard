@@ -8,19 +8,11 @@ use FutureStation\KeyGuard\Contracts\ValidatorInterface;
 class CompositeValidator implements ValidatorInterface
 {
     /**
-     * @var ValidatorInterface[]|HMACValidatorInterface[]
-     */
-    private array $validators;
-
-    /**
      * CompositeValidator constructor.
      *
      * @param  ValidatorInterface[]|HMACValidatorInterface[]  $validators
      */
-    public function __construct(array $validators)
-    {
-        $this->validators = $validators;
-    }
+    public function __construct(private readonly array $validators) {}
 
     /**
      * Validates the key and optionally the secret.

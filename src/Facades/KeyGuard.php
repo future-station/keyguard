@@ -23,7 +23,7 @@ class KeyGuard
      */
     private static function getKeyGuardInstance(): KeyGuardService
     {
-        if (self::$keyGuardInstance === null) {
+        if (! self::$keyGuardInstance instanceof KeyGuardService) {
             self::$keyGuardInstance = new KeyGuardService;
         }
 
