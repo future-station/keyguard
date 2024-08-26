@@ -3,6 +3,7 @@
 namespace FutureStation\KeyGuard;
 
 use FutureStation\KeyGuard\Contracts\HMACValidatorInterface;
+use FutureStation\KeyGuard\Contracts\ValidatorInterface;
 use FutureStation\KeyGuard\Enums\ServiceType;
 use FutureStation\KeyGuard\Enums\ValidationStatus;
 use FutureStation\KeyGuard\Exceptions\InvalidApiKeyException;
@@ -11,30 +12,28 @@ use FutureStation\KeyGuard\Services\ValidatorFactory;
 
 class KeyGuard
 {
-    private readonly ValidatorFactory $validatorFactory;
+    private ValidatorFactory $validatorFactory;
 
     public function __construct(?ValidatorFactory $validatorFactory = null)
     {
-        $this->validatorFactory = $validatorFactory ?: new ValidatorFactory;
+        $this->validatorFactory = $validatorFactory ?: new ValidatorFactory();
     }
 
-    public function validate(ServiceType $service, string $key, ?string $secret = null, ?string $hash = null, ?string $data = null): ValidationResponse
-    {
+    public function validate(
+        ServiceType $service,
+        string $key,
+        ?string $secret = null,
+        ?string $hash = null,
+        ?string $data = null
+    ) : ValidationResponse {
         $validator = $this->validatorFactory->create($service);
 
         try {
-            // Validate the API key and secret
-            $isValid = $validator->validate($key, $secret);
-
-            // If a hash and data are provided, and the validator supports HMAC, perform HMAC validation
-            if ($hash !== null && $secret !== null && $data !== null && $validator instanceof HMACValidatorInterface) {
-                $isValid = $isValid && $validator->validateHMAC($data, $secret, $hash);
-            }
-
+            $isValid = $this->performValidation($validator, $key, $secret, $hash, $data);
             $status = $isValid ? ValidationStatus::VALID : ValidationStatus::INVALID;
-        } catch (InvalidApiKeyException) {
+        } catch (InvalidApiKeyException $e) {
             $status = ValidationStatus::INVALID;
-        } catch (\Exception) {
+        } catch (\Exception $e) {
             $status = ValidationStatus::ERROR;
         }
 
@@ -43,5 +42,21 @@ class KeyGuard
             "Validation for {$service->value} completed.",
             [$service->value => $status->getMessage()]
         );
+    }
+
+    private function performValidation(
+        ValidatorInterface $validator,
+        string $key,
+        ?string $secret,
+        ?string $hash,
+        ?string $data
+    ) : bool {
+        $isValid = $validator->validate($key, $secret);
+
+        if ($validator instanceof HMACValidatorInterface && $hash && $secret && $data) {
+            $isValid = $isValid && $validator->validateHMAC($data, $secret, $hash);
+        }
+
+        return $isValid;
     }
 }

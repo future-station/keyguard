@@ -9,28 +9,43 @@ class ValidationResponse
     /**
      * ValidationResponse constructor.
      *
-     * @param  array<string, mixed>  $data
+     * @param ValidationStatus $status
+     * @param string $message
+     * @param array<string, mixed> $data
      */
     public function __construct(
         private readonly ValidationStatus $status,
         private readonly string $message = '',
         private readonly array $data = []
-    ) {}
+    ) {
+    }
 
-    public function getStatus(): ValidationStatus
+    /**
+     * Get the validation status.
+     *
+     * @return ValidationStatus
+     */
+    public function getStatus() : ValidationStatus
     {
         return $this->status;
     }
 
-    public function getMessage(): string
+    /**
+     * Get the validation message.
+     *
+     * @return string
+     */
+    public function getMessage() : string
     {
         return $this->message;
     }
 
     /**
+     * Get the additional data associated with the validation.
+     *
      * @return array<string, mixed>
      */
-    public function getData(): array
+    public function getData() : array
     {
         return $this->data;
     }

@@ -2,20 +2,17 @@
 
 namespace FutureStation\KeyGuard\Validators;
 
+use Psr\Http\Client\ClientInterface;
+use Psr\Http\Message\RequestInterface;
+use Psr\Http\Message\RequestFactoryInterface;
 use FutureStation\KeyGuard\Contracts\ValidatorInterface;
 use FutureStation\KeyGuard\Exceptions\InvalidApiKeyException;
-use Psr\Http\Client\ClientInterface;
-use Psr\Http\Message\RequestFactoryInterface;
 
-class GitHubValidator implements ValidatorInterface
+class GitHubValidator extends BaseValidator implements ValidatorInterface
 {
-    public function __construct(private readonly ClientInterface $httpClient, private readonly RequestFactoryInterface $requestFactory) {}
-
-    public function validate(string $key, ?string $secret = null): bool
+    public function validate(string $key, ?string $secret = null) : bool
     {
-        $request = $this->requestFactory->createRequest('GET', 'https://api.github.com/user')
-            ->withHeader('Authorization', 'Bearer '.$key);
-
+        $request = $this->createRequest($key);
         $response = $this->httpClient->sendRequest($request);
 
         if ($response->getStatusCode() !== 200) {
@@ -23,5 +20,12 @@ class GitHubValidator implements ValidatorInterface
         }
 
         return true;
+    }
+
+    private function createRequest(string $key) : RequestInterface
+    {
+        return $this->requestFactory
+            ->createRequest('GET', 'https://api.github.com/user')
+            ->withHeader('Authorization', 'Bearer ' . $key);
     }
 }
