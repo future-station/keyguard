@@ -15,7 +15,7 @@ it('validates OpenAI service with correct API key', function () {
 
     $response = $keyGuard->validate(ServiceType::OPENAI, 'valid_openai_api_key');
 
-    expect($response->getStatus()->value)->toBe('valid');
+    expect($response->getStatus())->toBe('valid');
 });
 
 it('validates Shopify service with correct HMAC', function () {
@@ -31,7 +31,7 @@ it('validates Shopify service with correct HMAC', function () {
 
     $response = $keyGuard->validate(ServiceType::SHOPIFY, 'api_key', $secret, $hash, $data);
 
-    expect($response->getStatus()->value)->toBe('valid');
+    expect($response->getStatus())->toBe('valid');
 })->skip('This test is skipped because the HMAC validation is not yet implemented.');
 
 it('fails validation for OpenAI service with incorrect API key', function () {
@@ -43,5 +43,5 @@ it('fails validation for OpenAI service with incorrect API key', function () {
 
     $response = $keyGuard->validate(ServiceType::OPENAI, 'invalid_openai_api_key');
 
-    expect($response->getStatus()->value)->toBe('invalid');
+    expect($response->getStatus())->toBe('invalid');
 });

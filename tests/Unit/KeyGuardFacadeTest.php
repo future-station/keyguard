@@ -31,21 +31,21 @@ it('validates OpenAI API key using facade', function () {
     $response = KeyGuard::validateOpenAI('valid-openai-key');
 
     expect($response)->toBeInstanceOf(ValidationResponse::class)
-        ->and($response->getStatus())->toBe(ValidationStatus::VALID);
+        ->and($response->getStatus())->toBe(ValidationStatus::VALID->value);
 });
 
 it('validates GitHub API key using facade', function () {
     $response = KeyGuard::validateGitHub('valid-github-key');
 
     expect($response)->toBeInstanceOf(ValidationResponse::class)
-        ->and($response->getStatus())->toBe(ValidationStatus::VALID);
+        ->and($response->getStatus())->toBe(ValidationStatus::VALID->value);
 });
 
 it('validates Shopify API key with HMAC using facade', function () {
     $response = KeyGuard::validateShopify('valid-shopify-key', 'shopify-secret', 'valid-hmac', 'some-data');
 
     expect($response)->toBeInstanceOf(ValidationResponse::class)
-        ->and($response->getStatus())->toBe(ValidationStatus::VALID);
+        ->and($response->getStatus())->toBe(ValidationStatus::VALID->value);
 });
 
 it('throws exception for invalid service type using facade', function () {

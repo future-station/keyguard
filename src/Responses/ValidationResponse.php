@@ -20,9 +20,9 @@ class ValidationResponse
     /**
      * Get the validation status.
      */
-    public function getStatus(): ValidationStatus
+    public function getStatus(): string
     {
-        return $this->status;
+        return $this->status->value;
     }
 
     /**
