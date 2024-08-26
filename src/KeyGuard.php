@@ -16,7 +16,7 @@ class KeyGuard
 
     public function __construct(?ValidatorFactory $validatorFactory = null)
     {
-        $this->validatorFactory = $validatorFactory ?: new ValidatorFactory();
+        $this->validatorFactory = $validatorFactory ?: new ValidatorFactory;
     }
 
     public function validate(
@@ -25,7 +25,7 @@ class KeyGuard
         ?string $secret = null,
         ?string $hash = null,
         ?string $data = null
-    ) : ValidationResponse {
+    ): ValidationResponse {
         $validator = $this->validatorFactory->create($service);
 
         try {
@@ -50,7 +50,7 @@ class KeyGuard
         ?string $secret,
         ?string $hash,
         ?string $data
-    ) : bool {
+    ): bool {
         $isValid = $validator->validate($key, $secret);
 
         if ($validator instanceof HMACValidatorInterface && $hash && $secret && $data) {

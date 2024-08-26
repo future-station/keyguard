@@ -1,11 +1,10 @@
 <?php
 
-use FutureStation\KeyGuard\Facades\KeyGuard;
 use FutureStation\KeyGuard\Enums\ServiceType;
-use FutureStation\KeyGuard\Responses\ValidationResponse;
 use FutureStation\KeyGuard\Enums\ValidationStatus;
+use FutureStation\KeyGuard\Facades\KeyGuard;
 use FutureStation\KeyGuard\KeyGuard as KeyGuardService;
-use Mockery\MockInterface;
+use FutureStation\KeyGuard\Responses\ValidationResponse;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 
 uses(MockeryPHPUnitIntegration::class);
